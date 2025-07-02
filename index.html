@@ -1,0 +1,151 @@
+<!DOCTYPE html><html lang="tr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Dini Bilgi Yarışması</title>
+  <style>
+    body {
+      margin: 0;
+      font-family: 'Segoe UI', sans-serif;
+      background-color: #fefce8;
+      color: #14532d;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 20px;
+    }
+    .container {
+      max-width: 600px;
+      width: 100%;
+      background-color: #ffffff;
+      border: 3px solid #14532d;
+      border-radius: 15px;
+      padding: 30px;
+      box-shadow: 0 0 20px rgba(0,0,0,0.1);
+    }
+    h1 {
+      color: #14532d;
+      text-align: center;
+    }
+    .question {
+      font-size: 20px;
+      margin-bottom: 15px;
+    }
+    input[type="text"] {
+      width: 100%;
+      padding: 10px;
+      font-size: 16px;
+      border: 2px solid #facc15;
+      border-radius: 10px;
+      margin-bottom: 20px;
+    }
+    button {
+      background-color: #14532d;
+      color: white;
+      border: none;
+      padding: 10px 20px;
+      font-size: 16px;
+      border-radius: 10px;
+      cursor: pointer;
+    }
+    .result {
+      font-weight: bold;
+      font-size: 18px;
+      margin-top: 20px;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>Dini Bilgi Yarışması</h1>
+    <div class="question" id="question">Yükleniyor...</div>
+    <input type="text" id="answerInput" placeholder="Cevabınızı yazınız">
+    <button onclick="submitAnswer()">Gönder</button>
+    <div class="result" id="result"></div>
+  </div>  <script>
+    const questions = [
+      { q: "İslam’da inanılması gereken esaslara ne denir?", a: "imanin sartlari" },
+      { q: "İslam’ın şartlarından biri olan ve yılda bir kez yapılan ibadet nedir?", a: "oruç" },
+      { q: "Hz. Muhammed’in doğduğu şehir hangisidir?", a: "mekke" },
+      { q: "İslam'ın 5 şartı nedir?", a: "islamin sartlari" },
+      { q: "Kıble hangi şehre yöneliktir?", a: "mekke" },
+      { q: "Kur’an-ı Kerim’in ilk suresi hangisidir?", a: "fatiha" },
+      { q: "Namazda okunan en kısa surelerden biri hangisidir?", a: "kevser" },
+      { q: "İslam’da ilk vahiy hangi mağarada geldi?", a: "hira" },
+      { q: "Müslümanların kutsal kitabı nedir?", a: "kurani kerim" },
+      { q: "Peygamber Efendimizin babasının adı nedir?", a: "abdullah" },
+      { q: "İslam peygamberi kimdir?", a: "hz muhammed" },
+      { q: "Kur’an-ı Kerim’de kaç sure vardır?", a: "114" },
+      { q: "İslam'da farz olan ibadetlerin toplamı kaçtır?", a: "5" },
+      { q: "Ramazan ayında tutulan oruca ne ad verilir?", a: "ramazan orucu" },
+      { q: "İslam’da kadınların başörtüsü takmasına ne ad verilir?", a: "tesettür" },
+      { q: "Kurban Bayramı kaç gün sürer?", a: "4" },
+      { q: "Ramazan Bayramı kaç gündür?", a: "3" },
+      { q: "İslam dininde ilk halife kimdir?", a: "ebu bekir" },
+      { q: "Hz. Ali'nin eşi kimdir?", a: "fatma" },
+      { q: "Mekke'den Medine'ye yapılan hicrete ne ad verilir?", a: "hicret" },
+      { q: "Hz. Muhammed’e ilk inen ayet hangi surededir?", a: "alak" },
+      { q: "İslam’da haftalık toplu ibadet hangi gündür?", a: "cuma" },
+      { q: "İslam’da abdest alınırken yıkanmayan uzuv hangisidir?", a: "göğüs" },
+      { q: "Hz. Muhammed’in son hutbesine ne ad verilir?", a: "veda hutbesi" },
+      { q: "İslam'da zekat oranı yüzde kaçtır?", a: "2.5" },
+      { q: "Kurban kesme ibadeti hangi ayda yapılır?", a: "zilhicce" },
+      { q: "Müslümanların ilk kıblesi neresidir?", a: "mescidi aksa" },
+      { q: "Kur’an’da adı geçen tek kadın kimdir?", a: "meryem" },
+      { q: "Hz. Muhammed’in annesinin adı nedir?", a: "amina" },
+      { q: "Zekat vermek neyi temizler?", a: "malı" },
+      { q: "İslam’da günlük kaç vakit namaz kılınır?", a: "5" },
+      { q: "İslam’da cuma namazı kaç rekattır?", a: "2" },
+      { q: "Kadir Gecesi hangi ayda yer alır?", a: "ramazan" },
+      { q: "Hz. Muhammed’e indirilen kitap nedir?", a: "kurani kerim" },
+      { q: "Hz. İsa’nın annesi kimdir?", a: "meryem" },
+      { q: "Kıyamet gününe ne ad verilir?", a: "ahiret" },
+      { q: "Kabe’yi inşa eden peygamber kimdir?", a: "ibrahim" },
+      { q: "İslam’da faiz alıp vermek nedir?", a: "haram" },
+      { q: "Kur’an-ı Kerim hangi dilde indirilmiştir?", a: "arapça" },
+      { q: "İslam’a göre ilk insan kimdir?", a: "adem" },
+      { q: "Hz. Yusuf’un rüyaları neyi temsil eder?", a: "gelecek" },
+      { q: "İslam’da oruç tutmaya engel olan durum nedir?", a: "hastalik" },
+      { q: "Şeytanın cennetten kovulma sebebi nedir?", a: "kibir" },
+      { q: "Hz. Muhammed kaç yaşında vefat etti?", a: "63" },
+      { q: "Hz. Musa’ya indirilen kitap nedir?", a: "tevrat" },
+      { q: "İslam’da alkollü içki içmek nedir?", a: "haram" },
+      { q: "Kur’an’da kaç ayet vardır?", a: "6236" },
+      { q: "İslam’da hayır işlemek ne olarak adlandırılır?", a: "sevap" },
+      { q: "Bir Müslümanın inanması gereken altı esas nedir?", a: "imanin sartlari" },
+      { q: "Cuma namazı erkeklere ne zaman farz olur?", a: "ergenlikten sonra" }
+    ];
+
+    let current = 0;
+    let score = 0;
+
+    function normalize(text) {
+      return text.toLowerCase().replace(/[^a-zğüşıöç0-9]/gi, "").normalize("NFD").replace(/\p{Diacritic}/gu, "");
+    }
+
+    function loadQuestion() {
+      if (current < questions.length) {
+        document.getElementById("question").innerText = `Soru ${current + 1}: ${questions[current].q}`;
+        document.getElementById("answerInput").value = "";
+        document.getElementById("result").innerText = "";
+      } else {
+        document.querySelector(".container").innerHTML = `<h1>Yarışma Bitti</h1><p>Doğru Sayısı: ${score} / ${questions.length}</p>`;
+      }
+    }
+
+    function submitAnswer() {
+      const userAnswer = normalize(document.getElementById("answerInput").value);
+      const correctAnswer = normalize(questions[current].a);
+      if (userAnswer.includes(correctAnswer)) {
+        score++;
+        document.getElementById("result").innerText = "✅ Doğru!";
+      } else {
+        document.getElementById("result").innerText = `❌ Yanlış! Doğru cevap: ${questions[current].a}`;
+      }
+      current++;
+      setTimeout(loadQuestion, 1500);
+    }
+
+    loadQuestion();
+  </script></body>
+</html>
