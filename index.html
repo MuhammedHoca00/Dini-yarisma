@@ -1,83 +1,267 @@
-<!DOCTYPE html><html lang="tr">
+<!DOCTYPE html>
+<html lang="tr">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Dini Bilgi Yarışması</title>
-  <style>
-    body {
-      margin: 0;
-      font-family: 'Segoe UI', sans-serif;
-      background-color: #fefce8;
-      color: #14532d;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      padding: 20px;
-    }
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Dini Bilgi Yarışması</title>
+
+<!-- Google Fonts: Tajawal (Arabi destekli, modern) -->
+<link href="https://fonts.googleapis.com/css2?family=Tajawal&display=swap" rel="stylesheet" />
+
+<style>
+  /* Temel ve reset */
+  * {
+    box-sizing: border-box;
+  }
+  body {
+    margin: 0; padding: 0;
+    font-family: 'Tajawal', sans-serif;
+    background: linear-gradient(135deg, #14532d, #0f3d2e);
+    color: #f4c430;
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+  }
+  .container {
+    background: #fffbe6cc;
+    max-width: 600px;
+    width: 100%;
+    border-radius: 15px;
+    box-shadow:
+      0 4px 8px rgba(0,0,0,0.3),
+      inset 0 0 30px #f4c430aa;
+    padding: 30px 40px;
+    text-align: center;
+  }
+  h1 {
+    margin-top: 0;
+    margin-bottom: 20px;
+    font-weight: 700;
+    text-shadow: 0 0 8px #f4c430bb;
+  }
+  input[type="text"] {
+    width: 100%;
+    padding: 14px 18px;
+    font-size: 18px;
+    border: 2px solid #f4c430;
+    border-radius: 12px;
+    outline: none;
+    margin-bottom: 25px;
+    transition: border-color 0.3s ease;
+    color: #14532d;
+    font-weight: 600;
+  }
+  input[type="text"]:focus {
+    border-color: #0f3d2e;
+    box-shadow: 0 0 8px #f4c430cc;
+    background: #fffbe6;
+  }
+  button {
+    background-color: #14532d;
+    color: #f4c430;
+    font-weight: 700;
+    font-size: 18px;
+    padding: 14px 32px;
+    border: none;
+    border-radius: 25px;
+    cursor: pointer;
+    box-shadow: 0 0 15px #f4c430aa;
+    transition: background-color 0.3s ease;
+  }
+  button:hover {
+    background-color: #0f3d2e;
+  }
+  .question {
+    font-size: 22px;
+    margin-bottom: 20px;
+    font-weight: 600;
+    color: #0f3d2e;
+    text-shadow: 0 0 6px #f4c430aa;
+  }
+  .result {
+    font-size: 20px;
+    font-weight: 700;
+    margin-top: 20px;
+    min-height: 28px;
+    color: #14532d;
+    text-shadow: 0 0 8px #f4c430bb;
+  }
+  .hidden {
+    display: none;
+  }
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 25px;
+  }
+  th, td {
+    border: 2px solid #f4c430;
+    padding: 12px 10px;
+    font-weight: 700;
+    font-size: 18px;
+  }
+  th {
+    background-color: #14532d;
+    color: #f4c430;
+  }
+  td {
+    background-color: #fffbe6cc;
+    color: #0f3d2e;
+  }
+  /* Responsive */
+  @media (max-width: 640px) {
     .container {
-      max-width: 600px;
-      width: 100%;
-      background-color: #ffffff;
-      border: 3px solid #14532d;
-      border-radius: 15px;
-      padding: 30px;
-      box-shadow: 0 0 20px rgba(0,0,0,0.1);
+      padding: 25px 20px;
     }
-    h1 {
-      color: #14532d;
-      text-align: center;
+    input[type="text"], button {
+      font-size: 16px;
+      padding: 12px 20px;
     }
     .question {
       font-size: 20px;
-      margin-bottom: 15px;
     }
-    input[type="text"] {
-      width: 100%;
-      padding: 10px;
+    th, td {
       font-size: 16px;
-      border: 2px solid #facc15;
-      border-radius: 10px;
-      margin-bottom: 20px;
+      padding: 10px 8px;
     }
-    button {
-      background-color: #14532d;
-      color: white;
-      border: none;
-      padding: 10px 20px;
-      font-size: 16px;
-      border-radius: 10px;
-      cursor: pointer;
-    }
-    .result {
-      font-weight: bold;
-      font-size: 18px;
-      margin-top: 20px;
-    }
-  </style>
+  }
+</style>
 </head>
 <body>
-  <div class="container">
-    <h1>Dini Bilgi Yarışması</h1>
-    <div class="question" id="question">Yükleniyor...</div>
-    <input type="text" id="answerInput" placeholder="Cevabınızı yazınız">
-    <button onclick="submitAnswer()">Gönder</button>
-    <div class="result" id="result"></div>
-  </div>  <script>
-    const questions = [
-      { q: "İslam’da inanılması gereken esaslara ne denir?", a: "imanin sartlari" },
-      { q: "İslam’ın şartlarından biri olan ve yılda bir kez yapılan ibadet nedir?", a: "oruç" },
-      { q: "Hz. Muhammed’in doğduğu şehir hangisidir?", a: "mekke" },
-      { q: "İslam'ın 5 şartı nedir?", a: "islamin sartlari" },
-      { q: "Kıble hangi şehre yöneliktir?", a: "mekke" },
-      { q: "Kur’an-ı Kerim’in ilk suresi hangisidir?", a: "fatiha" },
-      { q: "Namazda okunan en kısa surelerden biri hangisidir?", a: "kevser" },
-      { q: "İslam’da ilk vahiy hangi mağarada geldi?", a: "hira" },
-      { q: "Müslümanların kutsal kitabı nedir?", a: "kurani kerim" },
-      { q: "Peygamber Efendimizin babasının adı nedir?", a: "abdullah" },
-      { q: "İslam peygamberi kimdir?", a: "hz muhammed" },
-      { q: "Kur’an-ı Kerim’de kaç sure vardır?", a: "114" },
-      { q: "İslam'da farz olan ibadetlerin toplamı kaçtır?", a: "5" },
-      { q: "Ramazan ayında tutulan oruca ne ad verilir?", a: "ramazan orucu" },
+
+<div class="container" id="startScreen">
+  <h1>Dini Bilgi Yarışması</h1>
+  <p>Lütfen isminizi girin ve yarışmaya başlayın:</p>
+  <input type="text" id="username" placeholder="Adınız..." autocomplete="off" />
+  <button onclick="startQuiz()">Başla</button>
+</div>
+
+<div class="container hidden" id="quizScreen">
+  <h1>Hoş geldin, <span id="displayName"></span>!</h1>
+  <div class="question" id="question">Yükleniyor...</div>
+  <input type="text" id="answerInput" placeholder="Cevabınızı yazınız" autocomplete="off" />
+  <button onclick="submitAnswer()">Gönder</button>
+  <div class="result" id="result"></div>
+</div>
+
+<div class="container hidden" id="endScreen">
+  <h1>Yarışma Bitti!</h1>
+  <p id="finalScore"></p>
+  <h2>Skor Tablosu</h2>
+  <table>
+    <thead><tr><th>İsim</th><th>Doğru Sayısı</th></tr></thead>
+    <tbody id="scoreTable"></tbody>
+  </table>
+  <button onclick="restartQuiz()" style="margin-top:20px;">Yeniden Başla</button>
+</div>
+
+<script>
+  const questions = [
+    { q: "Kıble hangi şehre yöneliktir?", a: "mekke" },
+    { q: "İslam’ın ilk şartı nedir?", a: "şehadet" }, // sehâdet, esneklik için böyle
+    { q: "Kur’an’ın ilk suresi nedir?", a: "fatiha" },
+    { q: "Peygamber Efendimizin doğum yeri neresidir?", a: "mekke" },
+    { q: "İslam’da yılda bir kez verilen mala dayalı ibadet nedir?", a: "zekat" },
+    { q: "Ramazan ayında tutulan ibadetin adı nedir?", a: "oruç" },
+    { q: "Hz. Muhammed’e gelen ilk vahiy hangi dağda gelmiştir?", a: "nur" },
+    { q: "Hac ibadeti yılın hangi ayında yapılır?", a: "zilhicce" },
+    { q: "Hz. Muhammed’in veda hutbesi nerede okunmuştur?", a: "arefat" },
+    { q: "İslam’da cuma günü kılınan toplu namazın adı nedir?", a: "cuma namazı" },
+    { q: "Kur’an’da adı geçen tek kadın kimdir?", a: "meryem" },
+    { q: "Kurban kesmenin farz olduğu bayram hangisidir?", a: "kurban bayramı" },
+    { q: "Hz. Muhammed’in hicret ettiği şehir hangisidir?", a: "medine" },
+    { q: "Akçağlayan AİHL'de en sevilmeyen hoca kimdir? (ismi yeterli)", a: "selami" },
+    { q: "Namazda okunan kısa surelerden biri?", a: "kevser" },
+    { q: "Peygamber Efendimizin annesinin adı nedir?", a: "amine" },
+    { q: "İslam dininde haram olan içecek nedir?", a: "alkol" },
+    { q: "Hz. İbrahim’in oğlu kimdir?", a: "ismail" },
+    { q: "Kur’an-ı Kerim hangi dilde indirilmiştir?", a: "arapça" },
+    { q: "İslam’a göre ilk insan kimdir?", a: "adem" }
+  ];
+
+  let current = 0;
+  let score = 0;
+  let user = "";
+
+  function normalize(text) {
+    return text.toLowerCase()
+      .replace(/[^a-zğüşıöç0-9]/gi, "")
+      .normalize("NFD")
+      .replace(/\p{Diacritic}/gu, "");
+  }
+
+  function startQuiz() {
+    const usernameInput = document.getElementById("username").value.trim();
+    if (usernameInput === "") {
+      alert("Lütfen isminizi girin.");
+      return;
+    }
+    user = usernameInput;
+    document.getElementById("displayName").innerText = user;
+    document.getElementById("startScreen").classList.add("hidden");
+    document.getElementById("quizScreen").classList.remove("hidden");
+    loadQuestion();
+  }
+
+  function loadQuestion() {
+    if (current < questions.length) {
+      document.getElementById("question").innerText = `Soru ${current + 1}: ${questions[current].q}`;
+      document.getElementById("answerInput").value = "";
+      document.getElementById("result").innerText = "";
+    } else {
+      showResults();
+    }
+  }
+
+  function submitAnswer() {
+    const userAnswer = normalize(document.getElementById("answerInput").value);
+    const correctAnswer = normalize(questions[current].a);
+    if (userAnswer.includes(correctAnswer)) {
+      score++;
+      document.getElementById("result").innerText = "✅ Doğru!";
+    } else {
+      document.getElementById("result").innerText = `❌ Yanlış! Doğru cevap: ${questions[current].a}`;
+    }
+    current++;
+    setTimeout(loadQuestion, 1500);
+  }
+
+  function showResults() {
+    document.getElementById("quizScreen").classList.add("hidden");
+    document.getElementById("endScreen").classList.remove("hidden");
+    document.getElementById("finalScore").innerText = `${user}, doğru sayınız: ${score} / ${questions.length}`;
+    saveScore(user, score);
+    renderScoreTable();
+  }
+
+  function saveScore(name, score) {
+    let scores = JSON.parse(localStorage.getItem("diniScores") || "[]");
+    scores.push({ name, score });
+    localStorage.setItem("diniScores", JSON.stringify(scores));
+  }
+
+  function renderScoreTable() {
+    let scores = JSON.parse(localStorage.getItem("diniScores") || "[]");
+    let rows = scores
+      .sort((a, b) => b.score - a.score)
+      .map((s, i) => `<tr><td>${s.name}</td><td>${s.score}</td></tr>`)
+      .join("");
+    document.getElementById("scoreTable").innerHTML = rows;
+  }
+
+  function restartQuiz() {
+    current = 0;
+    score = 0;
+    user = "";
+    document.getElementById("endScreen").classList.add("hidden");
+    document.getElementById("startScreen").classList.remove("hidden");
+  }
+</script>
+
+</body>
+</html>      { q: "Ramazan ayında tutulan oruca ne ad verilir?", a: "ramazan orucu" },
       { q: "İslam’da kadınların başörtüsü takmasına ne ad verilir?", a: "tesettür" },
       { q: "Kurban Bayramı kaç gün sürer?", a: "4" },
       { q: "Ramazan Bayramı kaç gündür?", a: "3" },
